@@ -35,6 +35,14 @@ export default function Home() {
     setChamados([]);
   };
 
+  const finalizarChamado = (id) => {
+    setChamados(
+      chamados.map((chamado) =>
+        chamado.id === id ? { ...chamado, status: "finalizado" } : chamado
+      )
+    );
+  };
+
   const chamadosFiltrados = chamados.filter(
     (chamado) =>
       chamado.id.toString().includes(busca) ||
@@ -104,7 +112,8 @@ export default function Home() {
             </button>
           </form>
 
-          <div className="mt-5">
+          <div className="py-10 border-y-2 border-gray-700 my-8">
+          <h3 className="text-xl font-semibold text-zinc-600">Pesquisar</h3>
             <input
               type="text"
               placeholder="Buscar por ID ou descrição"
@@ -117,16 +126,25 @@ export default function Home() {
           <div className="mt-5">
             <h3 className="text-xl font-semibold text-zinc-600">Chamados</h3>
             {chamadosOrdenados.map((chamado) => (
-              <div key={chamado.id} className="mt-5 p-5 border border-zinc-400 rounded-md">
+              <div key={chamado.id} className="mt-5 p-5 border border-zinc-400 rounded-md relative">
+                <p className="text-zinc-600">ID:{chamado.id}</p>
                 <h3 className="text-xl font-semibold text-zinc-600">{chamado.titulo}</h3>
-                <p className="text-zinc-600">{chamado.descricao}</p>
+                <p className="text-zinc-600 text-wrap truncate" title={chamado.descricao}>{chamado.descricao}</p>
                 <p className="text-zinc-600">Prioridade: {chamado.prioridade}</p>
                 <p className="text-zinc-600">Status: {chamado.status}</p>
+                {chamado.status === "aberto" && (
+                  <button
+                    onClick={() => finalizarChamado(chamado.id)}
+                    className="mt-2 bg-green-500 text-white px-3 py-1 rounded-md"
+                  >
+                    Finalizar
+                  </button>
+                )}
               </div>
             ))}
           </div>
-
-          <div className="mt-5">
+          
+          <div className="mt-8 border-t-2 border-gray-800 pt-8 ">
             <h3 className="text-xl font-semibold text-zinc-600">Estatísticas</h3>
             <p className="text-zinc-600">Total de chamados: {estatisticas.total}</p>
             <p className="text-zinc-600">Chamados abertos: {estatisticas.abertos}</p>
