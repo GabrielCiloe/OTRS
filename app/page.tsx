@@ -11,12 +11,12 @@ export default function Home() {
   const [novoChamado, setNovoChamado] = useState({ titulo: "", descricao: "", prioridade: "baixa" });
   const [busca, setBusca] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
     const { name, value } = e.target;
     setNovoChamado({ ...novoChamado, [name]: value });
   };
 
-  const cadastrarChamado = (e) => {
+  const cadastrarChamado = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     const id = chamados.length + 1;
     setChamados([...chamados, { ...novoChamado, id, status: "aberto" }]);
@@ -35,7 +35,7 @@ export default function Home() {
     setChamados([]);
   };
 
-  const finalizarChamado = (id) => {
+  const finalizarChamado = (id: number) => {
     setChamados(
       chamados.map((chamado) =>
         chamado.id === id ? { ...chamado, status: "finalizado" } : chamado
